@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title class="animated infinite bounce"> Defense Against the Dark Arts</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link href="../css/home.css" rel="stylesheet">
+  <link href="../animate.css/animate.min.css" rel="stylesheet">
+
+ 
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <style>
+  body {
+      position: relative; 
+  }
+  #section1 {padding-top:100px;height:500px;color: white; background-image: url(DADA.jpg);}
+  #section2 {padding-top:50px;height:1800px;color: black; background-color:white;}
+
+  </style>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: white;font-color:white">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+      </button>
+    <a class="navbar-brand" href="#">DEFENSE AGAINST THE DARK ARTS</a>
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="#section2">WEEK 1: EVIL.EXE</a></li>
+       </ul>
+      </div>
+    </div>
+  </div>
+</nav>    
+
+<div id="section1" class="container-fluid animated flipInX"> 
+<br>
+<br>
+</div>
+
+
+<div id="section2" class="container-fluid">
+<h1 class="animated infinite slideOutUp">WEEK 1: EVIL.EXE</h1>
+<br>
+
+<div style="margin-left:200px;margin-right:200px;text-align:left">
+<h2 align=center>Beginning/Learning How To Use The VM</h2>
+<font size="4">
+</p>
+ I changed evil.exe, executed and tried to search for hints that evil.exe had been executed.  I went into my computer I could see the list of newly created/modified folder (1/17/2016) under local disk including ntldrs, under which has two files funbots and svchest. The day before I accidently named the file evil.exe.bin and ran the detection software tools which resulted in the FLYPAPER.SYS file. 
+</p>
+<br>
+<p>
+However, I realized because I executed evil.exe before I was supposed to, I had to revert to baseline snapshot and start over. So after renaming evil.exe, I started up the correct tools and took a snapshot.  I noticed that because I took a snapshot with all the programs running in the background, the snapshot would lag and eventually crash. In the future, I have kept reverting back to the snapshot of renamed evil.exe as my new baseline.
+</p>
+<br>
+<h2 align=center>Analysis:</h2>
+<p>
+I execute the evil.exe and got a popup Fakenet around 1pm and observed it under the processes monitor. You can see under process explorer, under the explorer.exe directory there are several evil.exe. After highlighting evil.exe, I saw how many process are consumed by evil.exe. In particular, you can see that operations performed by evil.exe include regclosekey, regdeletekey, regopenkey, regqueryvalue, querydirectories, closefile, openfiles etc. This is a good starting point, because it shows us which files/directories to look at next. There’s even a fake command prompt running under cmd.exe. 
+</p>
+<br>
+<p>
+The instructions asked us to find several items and explore them further. For example, C:\WINDOWS\system32\drivers\etc\hosts is the extension to Windows Host file, which is used to block or redirect hostnames. The /t /g everyone:F means Recurse down through existing directory structures and grant everyone access. I checked file extension before I executed evil.exe, and the only thing inside the file is comments on how to use the file. After execution, all of the lines remained commented. 
+</p>
+<br>
+<p>
+Tried to execute attrib -r -a -s -h C:\WINDOWS\system32\drivers\etc\hosts. The windows attrib command essentially displays/removes/sets all the hidden attributes of files/directories. The -r clears read-only, -a clears archive file, -s clears system file, and -h clears the hidden file attribute. When I run attrib under the directory, there are four files. 
+</p>
+<br>
+<p>
+	I used the attrib windows command which shows hidden files under C:/Users/Admin. This listed about 7 files under the admin file. 
+</p>
+<br>
+<p>
+	I ran processmon before executing evil.exe by reverting to the older snapshot. Prior to running it, there was no evil.exe. Clicking properties and strings, you can see a list of associated strings to evil.exe, including the run command (software\microsoft\windows\currentversion\run). Furthermore, we can get the process id (3008).
+</p>
+<br>
+<p>
+I tried to investigate the file-locations using cmd and I could only see C:\ntldrs\funbots.bat and C:\ntldrs\system.yf under the listed file directories. Whereas, C:\Users\Admin\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.IE5\KLTT2YG3\pao[1].exe, C:\Program Files\tongji2.exe, C:\ntldrs\svchest.exe, C:\ntldrs\Isinter.gif could not be found in under the given path. Several of these files are deleted once evil.exe are deleted and must be noticed mid-run. This is due to the batch file, which says to delete itself.
+</p>
+<br>
+<p>
+Under Antispy software, I was able to find the registry keys (HKCU\Software\Microsoft\Windows\CurrentVersion\Run\). HKCU is HKEY for the current user and replaced the key value. Antispy highlighted only a few programs in blue, including evil.exe. 
+</p>
+<br>
+<p>
+I noticed internet explorer was running in the background the entire time and from class learned that IE can often be used for URL retrieval. Furthermore, from class we learned the actual intentions of the malware was to hack into a korean banking system and install credit card schemers. 
+</p>
+<br>
+</font>
+</div>
+
+</div>
+
+</body>
+
+
+<div>
+
+<footer>
+  <center> <small>© Copyright 2017 SR KANNA</small> </center>
+</footer>
+</div>
+
+</html>
+
