@@ -1,28 +1,28 @@
 <p>
- I executed evil.exe and got a popup Fakenet around 1pm and observed it under the processes monitor. You can see under process explorer, under the explorer.exe directory there are several evil.exe. After highlighting evil.exe, I saw how many process are consumed by evil.exe. In particular, you can see that operations performed by evil.exe include regclosekey, regdeletekey, regopenkey, regqueryvalue, querydirectories, closefile, openfiles etc. This is a good starting point, because it shows us which files/directories to look at next. There’s even a fake command prompt running under cmd.exe. 
+Malware has a variety of attack vectors through which it infiltrates computers. For example, some common channels include email, IM, compromised sites & servers, malvertising, physical access (USB), etc, social engineering such as social media, IM, email, 
+exploitation through watering hole attacks, malvertising, physical access, or a combination for poisoned search results. The extent of social engineering includes inadvertently running an executable, exploitation includes browser-based exploit kits such as script, pdf, and java. Features such as USB and physical access are often also abused in malware. 
 </p>
-br
+<br>
+
 <p>
-	I ran processmon before executing evil.exe by reverting to the older snapshot. Prior to running it, there was no evil.exe. Clicking properties and strings, you can see a list of associated strings to evil.exe, including the run command (software\microsoft\windows\currentversion\run). Furthermore, we can get the process id (3008). 
+	Typically the first point of contact is through spam, networks, web or physical access. These can be prevented through anti-spam, firewall, network ISP, IP, Domain and URL reputation, and disk encryption. Similarly, local execution and malware with an established presence can take place through spam, network web and hosts. These can be prevented through client-side content filtering, network IPS, content scanning, antivirus, whitelisting etc. In the event of malicious activity, typically hosts, networks, web and data loss are typically experienced which can be mitigated through anti-virus, NIPS, firewall, domain, url rep and content filtering etc. 
 </p>
-br
+<br>
 <p>
 
-Under Antispy software, I was able to find the registry keys (HKCU\Software\Microsoft\Windows\CurrentVersion\Run\). HKCU is HKEY for the current user and replaced the key value. Antispy highlighted only a few programs in blue, including evil.exe. 
-</p>
-br
-<p>
-The instructions asked us to find several items and explore them further. For example, C:\WINDOWS\system32\drivers\etc\hosts is the extension to Windows Host file, which is used to block or redirect hostnames. The /t /g everyone:F means Recurse down through existing directory structures and grant everyone access. I checked file extension before I executed evil.exe, and the only thing inside the file is comments on how to use the file. After execution, all of the lines remained commented. 
+	Oftentimes from threats, we can see that the firewall, network reputation, anit-spam, web reputation, exploit prevention, system policies, application/access control, anti-malware and data loss prevention are all common malware defense techniques. In fact, most companies are starting to use a central point which gathers intelligence from all of these sources to create a holistic picture of the malware. This is essential, because it’s important to anticipate the threat going and not releasing new content or updates. 
 </p>
 <br>
 <p>
-I tried to execute attrib -r -a -s -h C:\WINDOWS\system32\drivers\etc\hosts. The windows attrib command essentially displays/removes/sets all the hidden attributes of files/directories. The -r clears read-only, -a clears archive file, -s clears system file, and -h clears the hidden file attribute. When I run attrib under the directory, there are four files. I used the attrib windows command which shows hidden files under C:/Users/Admin. This listed about 7 files under the admin file. 
-</p>
-br
-<p>
-I tried to investigate the file-locations using cmd and I could only see C:\ntldrs\funbots.bat and C:\ntldrs\system.yf under the listed file directories. Whereas, C:\Users\Admin\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.IE5\KLTT2YG3\pao[1].exe, C:\Program Files\tongji2.exe, C:\ntldrs\svchest.exe, C:\ntldrs\Isinter.gif could not be found in under the given path. Several of these files are deleted once evil.exe are deleted and must be noticed mid-run. This is due to the batch file, which says to delete itself.
+	One common way to identify malware is to use the pattern matching  yara software. Yara supplies an IDE to write our “rules”, which can either be written by us or generated. The malware is browsed and analyzed based on the rules. We used Yara in our labs to dissect the different malware samples. Craig recommended making our own rules instead of the generated ones, because then everything would be highlighted and we wouldn't gain any insight. He also recommended examining samples using fileinsight to predict variants. Common issues to consider with malware is signatures while shipping and false positives. 
 </p>
 <br>
 <p>
-I noticed internet explorer was running in the background the entire time and from class learned that IE can often be used for URL retrieval. Furthermore, from class we learned the actual intentions of the malware was to hack into a korean banking system and install credit card schemers. 
+	
+	During our lab we could execute in command line using yara.exe and include number of threads and timeout. All the files were located under the c:\Users\Admin\desktop\Tools\malware\Malware defense folder. There are seven samples under the Sytro directory. I tried to execute the example BadBoy script, but after it compiled and executed there were no matches. I also tried to writing a modified BadBoy rule which included the directory to the malicious file directory (c:\Users\Admin\desktop\Tools\malware\Malware defense\Class1\Samplegroup1\Sytro). However, writing out the entire directory wasn’t helpful either. Even commenting out and rename a few of the sample files to find a match didn’t yield any results. From the lab, I saw that there must be extremely good training sets to prevent false positives and give you good rules. Dissecting the samples further, there were two distinct groups: loaded six link libraries  (unable to run program name) and three link library (distinctive public keys). 
 </p>
+<br>
+<p>
+	We also explored the another malware analysis software, cuckoo in our second lab. Cuckoo analyzes samples inside a VM and can analyze malicious files, trace api calls, dump (encrypted)  network traffic, and advanced memory analysis. This is a fairly effective solution because physical machine throughput less effective than virtual and cuckoo can handle a lot of different executables. 
+</p>
+<br>
